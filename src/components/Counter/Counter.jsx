@@ -1,4 +1,4 @@
-import { useState, memo } from 'react';
+import { useState, memo, useCallback } from 'react';
 
 import IconButton from '../UI/IconButton.jsx';
 import MinusIcon from '../UI/Icons/MinusIcon.jsx';
@@ -27,31 +27,20 @@ function isPrime(number) {
   return true;
 }
 
-// memo():
-// - will take a look at the props of your function,
-// compare the old and new values coming in for props
-// and prevent execution if the value are the same.
-// It will, however, not prevent it from running if
-// internal state has changed.
-// Notes:
-// - Use memo as high up in component tree as possible
-// - don't over use it as it is costs performance
-// - don't use on components where props change frequently
-// - because component composition fixes constant render, (ConfigureCounter.jsx)
-//   memo is no longer needed and can be removed now
-const Counter = memo(function Counter({ initialCount }) {
-  log('<Counter /> rendered', 1);
-  const initialCountIsPrime = isPrime(initialCount);
 
+export default function Counter({ initialCount }) {
+  log('<Counter /> rendered', 1);
+
+  const initialCountIsPrime = isPrime(initialCount);
   const [counter, setCounter] = useState(initialCount);
 
-  function handleDecrement() {
+  const handleDecrement = useCallback(function handleDecrement() {
     setCounter((prevCounter) => prevCounter - 1);
-  }
+  }, []);
 
-  function handleIncrement() {
+  const handleIncrement = useCallback(function handleIncrement() {
     setCounter((prevCounter) => prevCounter + 1);
-  }
+  }, []);
 
   return (
     <section className="counter">
@@ -70,6 +59,4 @@ const Counter = memo(function Counter({ initialCount }) {
       </p>
     </section>
   );
-})
-
-export default Counter;
+}
