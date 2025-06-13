@@ -37,6 +37,8 @@ function isPrime(number) {
 // - Use memo as high up in component tree as possible
 // - don't over use it as it is costs performance
 // - don't use on components where props change frequently
+// - because component composition fixes constant render, (ConfigureCounter.jsx)
+//   memo is no longer needed and can be removed now
 const Counter = memo(function Counter({ initialCount }) {
   log('<Counter /> rendered', 1);
   const initialCountIsPrime = isPrime(initialCount);
