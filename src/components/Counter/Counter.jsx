@@ -1,4 +1,4 @@
-import { useState, memo, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 
 import IconButton from '../UI/IconButton.jsx';
 import MinusIcon from '../UI/Icons/MinusIcon.jsx';
@@ -31,7 +31,13 @@ function isPrime(number) {
 export default function Counter({ initialCount }) {
   log('<Counter /> rendered', 1);
 
-  const initialCountIsPrime = isPrime(initialCount);
+  // useMemo is used to wrap functions with complicated calculations
+  // store the value, and only re-run it if a depedency changes
+  // empty depedency array will only run once
+  // Note:
+  //  - don't overuse
+  //  - costs performance
+  const initialCountIsPrime = useMemo(() => isPrime(initialCount), [initialCount]);
   const [counter, setCounter] = useState(initialCount);
 
   const handleDecrement = useCallback(function handleDecrement() {
